@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest version="0.2" xml:base="intheshade/">
+    <template name="In The Shade">
+        <author>Mike de Boer</author>
+        <country>NL</country>
+        <creationdate>11/26/2007</creationdate>
+        <description>Default theme of zOOm Media Gallery</description>
+        <ranking>100.0</ranking>
+    </template>
+    <views>
+        <view name="gallery:overview" />
+        <view name="gallery:show" inherits="gallery:show:*" />
+        <view name="gallery:search" />
+        <view name="gallery:special" />
+        <view name="gallery:lightbox" inherits="gallery:lightbox:*" />
+        <view name="medium:show" inherits="medium:show:*" />
+        <view name="medium:edit" inherits="medium:edit:*" />
+        <view name="medium:delete" inherits="medium:delete:*" />
+        <view name="medium:lightbox" inherits="medium:lightbox:*" />
+        <view name="medium:playlist" inherits="medium:playlist:*" />
+        <view name="medium:metadata" inherits="medium:metadata:*" />
+        <view name="messagecenter" inherits="messagecenter:*" />
+        <view name="zmg:get:i18n" />
+        <view name="useradmin" />
+        <view name="singlepage" inherits="gallery:*,medium:*,useradmin" />
+    </views>
+    <resources xml:base="intheshade/">
+        <resource name="stylesheet" xml:base="css/">
+            <file href="zmg_intheshade.css" />
+        </resource>
+        <resource name="stylesheet" xml:base="css/">
+            <file href="shadowbox.css" />
+        </resource>
+        <resource name="javascript" xml:base="../../shared/js/">
+            <file href="ajaxqueue.js" />
+        </resource>
+        <resource name="javascript" xml:base="../../shared/js/">
+            <file href="zmg_shared.js" />
+        </resource>
+        <resource name="javascript" xml:base="../../shared/js/">
+            <file href="zmg_tooltip.js" />
+        </resource>
+        <resource name="javascript" xml:base="js/">
+            <file href="zmg_intheshade.js" />
+        </resource>
+        <resource name="javascript" xml:base="js/">
+            <file href="zmg_dispatches.js" />
+        </resource>
+        <resource name="javascript" xml:base="js/">
+            <file href="zmg_events_handlers.js" />
+        </resource>
+        <resource name="javascript" xml:base="js/">
+            <file href="zmg_events_server.js" />
+        </resource>
+        <resource name="javascript" xml:base="js/">
+            <file href="zmg_gui.js" />
+        </resource>
+        <resource name="javascript" xml:base="js/">
+            <file href="shadowbox-mootools.js" />
+        </resource>
+        <resource name="javascript" xml:base="js/">
+            <file href="shadowbox.js" />
+        </resource>
+        <resource name="javascript" xml:base="js/">
+            <file href="imageflow.js" />
+        </resource>
+        <resource name="template" type="html" view="singlepage" xml:base="">
+            <file href="intheshade.html.tpl" />
+        </resource>
+        <resource name="template" type="json" view="messagecenter" xml:base="">
+            <file href="messagecenter.json.tpl"/>
+        </resource>
+        <resource name="template" type="json" view="gallery:show:home" xml:base="">
+            <file href="galleryhome.json.tpl" />
+        </resource>
+        <resource name="template" type="json" view="gallery:show" xml:base="">
+            <file href="galleryshow.json.tpl" />
+        </resource>
+        <resource name="template" type="json" view="medium:show" xml:base="">
+            <file href="mediumshow.json.tpl" />
+        </resource>
+        <resource name="template" type="xml" view="medium:playlist" xml:base="">
+            <file href="player_playlist.tpl" />
+        </resource>
+        <resource name="template" type="json" view="zmg:get:i18n" xml:base="">
+            <file href="i18n.json.tpl" />
+        </resource>
+        <resource name="template" type="json" view="medium:metadata" xml:base="">
+            <file href="mediummeta.json.tpl" />
+        </resource>
+        <resource name="preview" xml:base="images/">
+            <file href="intheshade_preview.png" />
+        </resource>
+    </resources>
+</manifest>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="build" name="zmg">
+	<description>Build file zOOm Media Gallery</description>
+
+	<property name="app.dir" value="application" />
+	<property name="app.name" value="zoom" />
+	<property name="app.fullname" value="zOOm Media Gallery" />
+	<property name="app.descr" value="zOOm Media Gallery is a feature packed multi-gallery and multi-media component for the Joomla! CMS" />
+	<property name="app.author" value="Mike de Boer" />
+	<property name="app.author.email" value="mike AT zoomfactory.org" />
+	<property name="app.author.url" value="http://www.zoomfactory.org" />
+	<property name="app.copyright" value="This component is released under the GNU/GPL License" />
+	<property name="app.license" value="http://www.gnu.org/copyleft/gpl.html GNU/GPL" />
+	<property name="app.version" value="2.6 Alpha" />
+
+	<property name="manual.build" value="zmg_latest" />
+	<property name="deploy.build" value="zmg_" />
+	<property name="svn.rep" value="https://zoom-gallery.googlecode.com/svn/" />
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
+	<target name="clean">
+		<echo message="preparing directories for build: ${build.label}" />
+		<delete dir="application" />
+		<delete dir="packages" />
+		<mkdir dir="application" />
+		<mkdir dir="packages" />
+	</target>
+
+	<target name="build">
+		<antcall target="clean" inheritall="true" />
+		<antcall target="copy.all" inheritall="true" />
+		<antcall target="compress.all" inheritall="true" />
+		<antcall target="package.all" inheritall="true" />
+		<antcall target="deploy.application" inheritall="true">
+			<param name="app.host" value="www.zoomfactory.org" />
+		</antcall>
+	</target>
+
+	<target name="build.test">
+		<property name="build.label" value="joomla.1_5_x" />
+		<antcall target="package.all" inheritall="true" />
+	</target>
+
+	<target name="build.joomla.1_5_x">
+		<property name="build.label" value="joomla.1_5_x" />
+		<antcall target="build" inheritall="true" />
+	</target>
+
+	<target name="build.joomla.1_0_x">
+		<property name="build.label" value="joomla.1_0_x" />
+		<antcall target="build" inheritall="true" />
+	</target>
+
+	<target name="copy.all">
+		<copy todir="application/${build.label}/com_${app.name}">
+			<fileset dir="..">
+				<include name="docs/**" />
+				<include name="etc/**" />
+				<include name="lib/**" />
+				<include name="locale/**" />
+				<include name="var/**" />
+				<include name="*.html" />
+				<include name="*.xml" />
+				<include name="*.php" />
+				<exclude name="_old" />
+				<exclude name="administrator" />
+			</fileset>
+		</copy>
+		
+		<copy todir="application/${build.label}/com_${app.name}">
+            <fileset dir="../administrator">
+                <include name="images/**" />
+                <include name="*.html" />
+                <include name="*.php" />
+            	<include name="*.sql" />
+            	<include name="*.xml" />
+            </fileset>
+        </copy>
+		
+		<delete dir="application/${build.label}/com_${app.name}/etc/compiled" />
+		<mkdir dir="application/${build.label}/com_${app.name}/etc/compiled" />
+		<delete dir="application/${build.label}/com_${app.name}/lib/_old" />
+		<delete dir="application/${build.label}/com_${app.name}/var/www/_old" />
+		<delete dir="application/${build.label}/com_${app.name}/locale/_old" />
+        <move file="application/${build.label}/com_${app.name}/etc/app.config.php.deploy"
+          tofile="application/${build.label}/com_${app.name}/etc/app.config.php" />
+	</target>
+
+	<target name="compress.all">
+		<echo message="Compressing CSS with YUI compress" />
+		<foreach param="file" target="compress.css" inheritall="yes">
+			<path>
+				<fileset dir="application">
+					<include name="**/*.css" />
+				</fileset>
+			</path>
+		</foreach>
+		<echo message="Compressing JS with YUI compress" />
+		<foreach param="file" target="compress.js" inheritall="yes">
+			<path>
+				<fileset dir="application">
+					<include name="**/*.js" />
+				</fileset>
+			</path>
+		</foreach>
+	</target>
+
+	<target name="compress.css">
+		<exec executable="java">
+			<arg line=" -jar yuicompressor-2.3.5/build/yuicompressor-2.3.5.jar -o '${file}.tmp' '${file}'" />
+		</exec>
+		<move file="${file}.tmp" tofile="${file}" />
+	</target>
+
+	<target name="compress.js">
+		<exec executable="java">
+			<arg line=" -jar yuicompressor-2.3.5/build/yuicompressor-2.3.5.jar --charset=UTF-8 -o '${file}.tmp' '${file}'" />
+		</exec>
+		<move file="${file}.tmp" tofile="${file}" />
+	</target>
+	
+	<target name="package.all">
+		<echo message="Generating package slip (installation file)" />
+		<exec executable="php">
+            <arg line=" -n packager/packager.php label='${build.label}' name='${app.name}' fullname='${app.fullname}' descr='${app.descr}' author='${app.author}' authoremail='${app.author.email}' authorurl='${app.author.url}' copy='${app.copyright}' license='${app.license}' version='${app.version}'" />
+        </exec>
+		<zip destfile="packages/${app.name}_${build.label}.zip" basedir="application/${build.label}" />
+	</target>
+
+	<target name="deploy">
+		<property name="js.arg" value="smd" />
+		<property name="build.label" value="${deploy.build}${label}" />
+		<antcall target="clean" inheritall="true" />
+		<antcall target="copy.all" inheritall="true" />
+		<antcall target="compress.all" inheritall="true" />
+		<copy file="index.jsp" tofile="application/index.jsp" filtering="on">
+			<filterset>
+				<filter token="build" value="${build.label}" />
+			</filterset>
+		</copy>
+		<antcall target="deploy.content" inheritall="true" />
+		<antcall target="deploy.application" inheritall="true">
+			<param name="app.host" value="bikini.ebuddy.com" />
+		</antcall>
+		<antcall target="deploy.application" inheritall="true">
+			<param name="app.host" value="geeks.ebuddy.net" />
+		</antcall>
+		<exec executable="svn">
+			<arg line="copy ${svn.rep}/trunk ${svn.rep}/tags/${build.label} -m 'tagged ${build.label}'" />
+		</exec>
+		<antcall target="docs" />
+	</target>
+
+	<target name="deprecated.compress">
+		<exec os="Windows XP" executable="jsjuicer.exe" output="${target}" input="${source}" append="true" error="jsjuicer.log">
+			<arg line="-${js.arg}" />
+		</exec>
+		<exec os="Linux" executable="${basedir}/jsjuicer" output="${target}" input="${source}" append="true" error="jsjuicer.log">
+			<arg line="-${js.arg}" />
+		</exec>
+	</target>
+
+	<target name="deploy.application">
+		<echo message="deploying build ${build.label}" />
+	</target>
+
+	<target name="docs">
+		<java jar="jsdoc/app/js.jar" fork="true" dir="${basedir}/jsdoc">
+			<arg line=" app/run.js -r -A -d=../docs -t=templates/htm ../../js">
+			</arg>
+		</java>
+		<copy todir="/usr/share/dokuwiki/jsdoc">
+			<fileset dir="docs" />
+		</copy>
+	</target>
+
+</project>

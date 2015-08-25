@@ -1,0 +1,831 @@
+/**
+ * zOOm Media Gallery! - a multi-gallery component 
+ * 
+ * @package zmg
+ * @version $Revision$
+ * @author Mike de Boer <mdeboer AT ebuddy.com>
+ * @copyright Copyright &copy; 2007, Mike de Boer. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GPL
+ */
+
+.zmg_clear
+{
+    clear: both;
+    height: 0;
+    overflow: hidden;
+    line-height: 0;
+    font-size: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#zmg_admin_cont
+{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+#zmg_admin_cont ol,
+#zmg_admin_cont ul
+{
+    list-style: none;
+}
+
+#zmg_admin_cont .subheader
+{
+    height: 1;
+    border-top: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    backgound-color: #f9f9f9;
+    color: #333;
+    padding: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+#zmg_admin_cont select
+{
+    width: 150px;
+}
+
+#zmg_admin_loader
+{
+    position: absolute;
+    background: url(../images/spinner_small.gif) no-repeat 2px 2px;
+    top: 6px;
+    right: 2px;
+    width: 20px;
+    height: 20px;
+    z-index: 50;
+}
+
+#zmg_admin_messagecenter
+{
+    position: absolute;
+    width: 245px;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: visible;
+    z-index: 20000;
+}
+
+#zmg_gallerymanager_newclick
+{
+	position: absolute;
+	/*background: transparent url(../images/toolbar/icon-32-new.png) no-repeat;
+    background-position: top left !important;
+    background-position: 0px 14px;*/
+	top: 32px;
+	left: 32px;
+	/*width: 245px;
+	height: 32px;*/
+    line-height: 32px;
+    vertical-align: middle;
+	overflow: visible;
+	padding: 0 !important;
+    padding: 16px 0 0 0;
+	z-index: 10000;
+}
+
+#zmg_gallerymanager_newclick a
+{
+    background: transparent url(../images/toolbar/icon-32-new.png) no-repeat 0px 16px;
+	padding: 22px 4px 14px 40px;
+	height: 32px;
+    width: 245px;
+	/*line-height: 32px;
+	vertical-align: middle;*/
+}
+
+#zmg_gallerymanager_newclick a:hover
+{
+	border-right: 1px solid #d0d0d0;
+	border-bottom: 1px solid #d0d0d0;
+}
+
+.zmg_tb_disabled a
+{
+    color: #ccc !important;
+}
+
+.zmg_tb_disabled .zmg_tb_icon
+{
+    background-position: 0px -32px;
+}
+
+.zmg_tb_icon_mmUpload
+{
+    background-image: url(../images/toolbar/icon-32-upload.png)
+}
+
+.zmg_tb_icon_mmUploadClear
+{
+    background-image: url(../images/toolbar/icon-32-cancel.png)
+}
+
+.zmg_tb_icon_mediumBack
+{
+    background-image: url(../images/toolbar/icon-32-back.png)
+}
+
+.zmg_tb_icon_mediumSave,
+.zmg_tb_icon_gallerySave,
+.zmg_tb_icon_settingsSave
+{
+    background-image: url(../images/toolbar/icon-32-save.png)
+}
+
+.zmg_tb_icon_galleryNew,
+.zmg_tb_icon_mmUploadStart
+{
+    background-image: url(../images/toolbar/icon-32-new.png)
+}
+
+.zmg_tb_icon_galleryDelete
+{
+    background-image: url(../images/toolbar/icon-32-trash.png)
+}
+
+.zmg_panel
+{
+    position: relative;
+    border: 1px solid #abc;
+    width: 250px;
+    overflow: hidden;
+    float: left;
+    display: inline;
+    z-index: 1;
+}
+
+.zmg_border_panel
+{
+    /*left: 0;
+    position: absolute;
+    top: 0; */
+}
+
+.zmg_panel_header
+{
+    color: #fafafa;
+    border: 1px solid #abc;
+    background-image: url(../images/panel/white-top-bottom.gif);
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 11px;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bold;
+    line-height: 15px;
+    overflow: hidden;
+    padding: 5px 3px 4px 5px;
+}
+
+.zmg_tool
+{
+    background-image: url(../images/panel/tool-sprites.gif);
+    margin-left: 2px;
+    height: 15px;
+    width: 15px;
+    float: right;
+    overflow: hidden;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.zmg_tool_pinned
+{
+    background-position: 0 -135px; 
+}
+
+.zmg_tool_pinned_hover
+{
+    background-position: -15px -135px; 
+}
+
+.zmg_tool_unpinned
+{
+    background-position: 0 -150px; 
+}
+
+.zmg_tool_unpinned_hover
+{
+    background-position: -15px -150px; 
+}
+
+.zmg_panel_header_text
+{
+    
+}
+
+.zmg_panel_body
+{
+    border-color: #abc;
+    border-style: none solid solid none;
+    border-width: 0 1px 1px 0;
+    width: 248px;
+    height: auto;
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+#zmg_view_content
+{
+    position: relative;
+    float: right;
+    display: inline;
+}
+
+.zmg_greyblock
+{
+    position: relative;
+    background-color: #f9f9f9;
+    border: 1px solid #d5d5d5;
+    padding: 4px;
+    margin: 4px 0 4px 0;
+    width: auto;
+    display: block;
+}
+
+.mooTree_node
+{
+    font-family: Verdana, Arial, Helvetica;
+    font-size: 10px;
+    height: 18px;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.mooTree_text
+{
+    padding-top: 3px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.mooTree_img
+{
+    float: left;
+    width: 18px;
+    height: 18px;
+    overflow: hidden;
+}
+
+.mooTree_selected
+{
+    background: #fff url(../images/item-over-sel.gif) repeat-x bottom left;
+    border-top: 1px solid #b7d0d9;
+    font-weight: bold;
+}
+
+.tab-all-container
+{
+    background: #fff;/*#6b869f;*/
+    border: 1px solid #abc;
+    overflow: hidden;
+    margin: 0;
+    padding: 0 0 2px 0;
+    zoom: 1;
+}
+
+.tab-strip-wrapper
+{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+ul.tab-strip
+{
+    background: #dbdbdb url(../images/tabs/tab-strip-bg.gif) repeat-x bottom;
+    border-bottom: 1px solid #4c647e;
+    padding: 4px 0 0 2px;
+    margin: 0;
+    width: 5000px;
+    display: block;
+    zoom: 1;
+}
+
+.tab-strip a,
+.tab-strip span,
+.tab-strip em
+{
+    display: block;
+}
+
+ul.tab-strip li
+{
+    float: left;
+    line-height: 15px;
+    margin: 0 0 0 2px;
+    padding: 0;
+}
+.tab-strip a
+{
+    text-decoration: none !important;
+    margin: 2px 0 0 2px;
+    -moz-outline: none;
+    outline: none;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.tab-strip .tab-right
+{
+    background: transparent url(../images/tabs/tabs-sprite.gif) no-repeat 0 -51px;
+    padding-left: 10px;
+}
+
+.tab-strip .tab-left
+{
+    background: transparent url(../images/tabs/tabs-sprite.gif) no-repeat right -351px;
+    padding-right: 10px;
+}
+
+.tab-strip .tab-inner
+{
+    background: transparent url(../images/tabs/tabs-sprite.gif) repeat-x 0 -201px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.tab-strip li.tab-edge
+{
+    float: left;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 none !important;
+    font-size: 1px !important;
+    line-height: 1px!important;
+    overflow: hidden;
+    zoom: 1;
+    background: transparent !important;
+    width:1px;
+}
+
+.tab-strip span.tab-text
+{
+    padding: 4px 0;
+    color: #333;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.tab-selected
+{
+    cursor: default;
+}
+
+.tab-selected span.tab-text
+{
+    cursor: default;
+    color: #fff;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.tab-over span.tab-text
+{
+    color: #111;
+    font-style: normal;
+    font-weight: normal;
+}
+
+tab-strip .tab-selected .tab-right
+{
+    margin-bottom: -1px;
+}
+
+tab-strip .tab-selected .tab-right span.tab-text
+{
+    padding-bottom: 5px;
+}
+
+/* Tab bg image for each state */
+.tab-strip .tab-over .tab-right { background-position: 0 -101px; }
+.tab-strip .tab-over .tab-left { background-position: right -401px; }
+.tab-strip .tab-over .tab-inner { background-position: 0 -251px; }
+.tab-strip .tab-selected .tab-right { background-position: 0 0; }
+.tab-strip .tab-selected .tab-left { background-position: right -301px; }
+.tab-strip .tab-selected .tab-inner { background-position: 0 -151px; }
+
+.tab-wrapper
+{
+    position: relative;
+    background:#fff;
+    border: 0px;
+    top: 0px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.tab-wrapper .tab-container
+{
+    margin: 10px;
+}
+
+.checked
+{
+    background: url(../images/chk_on.png) no-repeat;
+    cursor: pointer;
+    cursor: hand;
+}
+.unchecked
+{
+    background: url(../images/chk_off.png) no-repeat;
+    cursor: pointer;
+    cursor: hand;
+}
+.selected
+{
+    background: url(../images/rdo_on.png) no-repeat;
+    cursor: pointer;
+    cursor: hand;
+}
+.unselected
+{
+    background: url(../images/rdo_off.png) no-repeat;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.lgrid-toolbar
+{
+    position: relative;
+    background-image: url(../images/panel/white-top-bottom.gif);
+    border: 1px solid #abc;
+    padding: 5px 3px 4px 5px;
+    height: 24px;
+    margin: 0;
+    color: #fafafa;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 11px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bold;
+    line-height: 16px;
+    overflow: hidden;
+    font-size-adjust: none;
+    font-stretch: normal;
+}
+
+.lgrid-nav
+{
+    position: relative;
+    float: right;
+    display: inline;
+    padding: 0;
+    margin: 0 20px 0 0;
+}
+
+.lgrid-pagination
+{
+    position: relative;
+    float: left;
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+
+.lgrid-nav-btn
+{
+    
+    width: 16px;
+}
+
+.lgrid-nav-btn.over
+{
+    
+    width: 16px;
+}
+
+.lgrid-nav-btn div
+{
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.lgrid-nav-btn-disabled div
+{
+    cursor: default;
+}
+
+.lgrid-nav-btn .lgrid-nav-btn-first
+{
+    background: transparent url(../images/panel/page-first.gif) no-repeat top left;
+}
+
+.lgrid-nav-btn-disabled .lgrid-nav-btn-first
+{
+    background-image: url(../images/panel/page-first-disabled.gif);
+}
+
+.lgrid-nav-btn .lgrid-nav-btn-prev
+{
+    background: transparent url(../images/panel/page-prev.gif) no-repeat top left;
+}
+
+.lgrid-nav-btn-disabled .lgrid-nav-btn-prev
+{
+    background-image: url(../images/panel/page-prev-disabled.gif);
+}
+
+.lgrid-nav-btn .lgrid-nav-btn-next
+{
+    background: transparent url(../images/panel/page-next.gif) no-repeat top left;
+}
+
+.lgrid-nav-btn-disabled .lgrid-nav-btn-next
+{
+    background-image: url(../images/panel/page-next-disabled.gif);
+}
+
+.lgrid-nav-btn .lgrid-nav-btn-last
+{
+    background: transparent url(../images/panel/page-last.gif) no-repeat top left;
+}
+
+.lgrid-nav-btn-disabled .lgrid-nav-btn-last
+{
+    background-image: url(../images/panel/page-last-disabled.gif);
+}
+
+.lgrid-scroller
+{
+    position: relative;
+    height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    clear: both;
+    border: 1px solid #aaa;
+}
+
+.lgrid-body,
+.lgrid-panel-edit
+{
+    position: absolute;
+    border-bottom: 1px solid #e0e0e0;
+    top: 0px;
+    left: 0px;
+    padding: 0 10px 0 0;
+    margin: 0;
+}
+
+.lgrid-panel-edit
+{
+    padding: 0 4px 0 14px;
+}
+
+.lgrid-body div
+{
+    background: transparent url(../images/listArrow.png) no-repeat right center;
+    border-bottom: 1px solid #e0e0e0;
+    color: #333;
+    padding: 4px;
+    height: 76px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.lgrid-body div.lgrid-body-itemsel,
+.lgrid-body-itemsel
+{
+    background-color: #6d84a2;
+    background-image: url(../images/listArrowSel.png);
+}
+
+.view-floated .lgrid-body div dt
+{
+    clear: left;
+}
+.view-floated .lgrid-body div dd
+{
+    clear: left;
+}
+
+.lgrid-body div img
+{
+    float: left;
+}
+
+.lgrid-body div b
+{
+    float: left;
+    font-size: 13px;
+    font-weight: bold;
+    color: #ccc;
+}
+.lgrid-body div dt
+{
+    float: left;
+    font-size: 13px;
+    margin-left: 2em;
+    margin-top: 0.3em;
+
+}
+.lgrid-body div dd
+{
+    float: left;
+    margin-left: 2em;
+    margin-top: 4px;
+    color: #aaa;
+}
+
+.row-even
+{
+    background-color: #fff;
+}
+
+.zmg-tip
+{
+    position: relative;
+    float: left;
+    margin-bottom: 4px;
+    visibility: hidden;
+    z-index: 20000;
+    border: 0 none;
+}
+.zmg-tip .zmg-tip-close
+{
+    background-image: url(../images/tip/close.gif);
+    height: 15px;
+    float: right;
+    width: 15px;
+    margin: 0 0 2px 2px;
+    cursor: pointer;
+    display: none;
+}
+.zmg-tip .zmg-tip-tc
+{
+    background: transparent url(../images/tip/tip-sprite.gif) no-repeat 0 -62px;
+    padding-top: 3px;
+    overflow: hidden;
+    zoom: 1;
+}
+.zmg-tip .zmg-tip-tl
+{
+    background: transparent url(../images/tip/tip-sprite.gif) no-repeat 0 0;
+    padding-left: 6px;
+    overflow: hidden;
+    zoom: 1;
+}
+.zmg-tip .zmg-tip-tr
+{
+    background: transparent url(../images/tip/tip-sprite.gif) no-repeat right 0;
+    padding-right: 6px;
+    overflow: hidden;
+    zoom: 1;
+}
+.zmg-tip .zmg-tip-bc
+{
+    background: transparent url(../images/tip/tip-sprite.gif) no-repeat 0 -121px;
+    height: 3px;
+    overflow: hidden;
+}
+.zmg-tip .zmg-tip-bl
+{
+    background: transparent url(../images/tip/tip-sprite.gif) no-repeat 0 -59px;
+    padding-left: 6px;
+    zoom: 1;
+}
+.zmg-tip .zmg-tip-br
+{
+    background: transparent url(../images/tip/tip-sprite.gif) no-repeat right -59px;
+    padding-right: 6px;
+    zoom: 1;
+}
+.zmg-tip .zmg-tip-mc
+{
+    border: 0 none;
+    font: normal 11px tahoma,arial,helvetica,sans-serif;
+}
+.zmg-tip .zmg-tip-ml
+{
+    background: #fff url(../images/tip/tip-sprite.gif) no-repeat 0 -124px;
+    padding-left: 6px;
+    zoom: 1;
+}
+.zmg-tip .zmg-tip-mr
+{
+    background: transparent url(../images/tip/tip-sprite.gif) no-repeat right -124px;
+    padding-right: 6px;
+    zoom: 1;
+}
+.ext-ie .zmg-tip .zmg-tip-header,
+.ext-ie .zmg-tip .zmg-tip-tc
+{
+    font-size: 0;
+    line-height: 0;
+}
+.zmg-tip .zmg-tip-header-text
+{
+    font: bold 11px tahoma,arial,helvetica,sans-serif;
+    padding: 0;
+    margin: 0 0 2px 0;
+    color: #444;
+}
+.zmg-tip .zmg-tip-body
+{
+    font: normal 11px tahoma,arial,helvetica,sans-serif;
+    margin: 0!important;
+    line-height: 14px;
+    color: #444;
+    padding: 0;
+}
+.zmg-tip .zmg-tip-body .loading-indicator
+{
+    margin: 0;
+}
+.zmg-tip-draggable .zmg-tip-header,
+.zmg-tip-draggable .zmg-tip-header-text
+{
+    cursor:move;
+}
+
+.upload-queue
+{
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+}
+.zmg_fancyupload_queue li
+{
+    background: transparent url(../images/upload/upload.png) no-repeat 0 5px;
+    padding: 5px 0 5px 22px;
+}
+.upload-queue .queue-file
+{
+    font-weight: bold;
+}
+.zmg_fancyupload_queue .queue-size
+{
+    margin-left: 1em;
+    color: #AAAAAA;
+    font-size: 0.9em;
+}
+.zmg_fancyupload_queue .queue-loader
+{
+    position: relative;
+    background-color: #DDDDDD;
+    border: 1px inset #DDDDDD;
+    color: #FFFFFF;
+    font-size: 0.9em;
+    margin: 3px 15px;
+}
+.zmg_fancyupload_queue .queue-subloader
+{
+    position: absolute;
+    background-color: #81B466;
+    left: 0pt;
+    top: 0;
+    height: 100%;
+    width: 0;
+    text-align: center;
+}
+
+.zmg_fancyupload_queue .input-delete
+{
+    background: transparent url(../images/upload/delete.png) no-repeat top left;
+    border: medium none;
+    float: right;
+    height: 16px;
+    width: 16px;
+    text-decoration: none;
+}
+
+.zmg_accordion_panel
+{
+    border: 1px solid #ccc;
+    margin-bottom: 3px;
+}
+
+.zmg_accordion_start {}
+
+.zmg_accordion_toggler
+{
+    background: #eee;
+    border-bottom: 1px solid #ccc;
+    margin: 0;
+    padding: 2px 5px;
+    color: #666;
+    font-size: 13px;
+}
+
+.zmg_accordion_element
+{
+    padding: 0 4px 0px 8px; 
+}
